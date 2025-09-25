@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacaciones para Nelsona - Flybondi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .contenedor {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+        }
+        h1 {
+            color: #116ac9;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        p {
+            text-align: center;
+            color: #666;
+        }
+        .form-group {
+            margin: 20px 0;
+            text-align: center;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #007bff;
+        }
+        input {
+            font-size: 18px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+        }
+        input:focus {
+            border-color: #116ac9;
+            outline: none;
+        }
+        button {
+            font-size: 20px;
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 2px 4px rgba(0,123,255,0.3);
+        }
+        #resultados {
+            margin-top: 30px;
+        }
+        h2 {
+            color: #000000;
+            text-align: center;
+            font-size: 24px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #e1e6ff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            border-left: 5px #007bff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .destino {
+            font-size: 22px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .detalles {
+            color: #555;
+            margin: 10px 0;
+        }
+        .costo {
+            font-size: 20px;
+            color: #000000;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .no-resultados {
+            text-align: center;
+            color: #dc3545;
+            font-size: 20px;
+            background: #fff5f5;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ffe6e6;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h1></span>¡Hola Nelsona!</h1>
+        <p>Te ayudo a encontrar tus vacaciones ideales!</p>
+        
+        <div class="form-group">
+            <label for="presupuesto">Presupuesto máximo (en $):</label>
+            <input type="number" id="presupuesto" value="800" min="0">
+        </div>
+        
+        <div class="form-group">
+            <label for="origen">Desde qué ciudad sales?</label>
+            <input type="text" id="origen" value="Buenos Aires" placeholder="Tu ciudad">
+        </div>
+        
+        <button onclick="buscar()"></span>Buscar opciones</button>
+        
+        <div id="resultados"></div>
+    </div>
+
+    <script>
+        // Datos de vuelos, como antes. Agregué un par más para variedad.
+        var vuelos = [
+            { origin: "BUE", destination: "COR", price: 150, availability: 5, date: "2024-03-10" },
+            { origin: "BUE", destination: "COR", price: 170, availability: 4, date: "2024-03-20" },
+            { origin: "COR", destination: "BUE", price: 140, availability: 6, date: "2024-03-15" },
+            { origin: "COR", destination: "BUE", price: 160, availability: 5, date: "2024-03-25" },
+            
+            { origin: "BUE", destination: "MDQ", price: 200, availability: 3, date: "2024-04-05" },
+            { origin: "BUE", destination: "MDQ", price: 220, availability: 2, date: "2024-04-15" },
+            { origin: "MDQ", destination: "BUE", price: 190, availability: 4, date: "2024-04-10" },
+            { origin: "MDQ", destination: "BUE", price: 210, availability: 3, date: "2024-04-20" },
+            
+            { origin: "BUE", destination: "ROS", price: 100, availability: 10, date: "2024-05-01" },
+            { origin: "BUE", destination: "ROS", price: 120, availability: 8, date: "2024-05-10" },
+            { origin: "ROS", destination: "BUE", price: 90, availability: 9, date: "2024-05-05" },
+            { origin: "ROS", destination: "BUE", price: 110, availability: 7, date: "2024-05-15" },
+            
+            // Agregué uno más para Ushuaia, pero ajustado a presupuesto
+            { origin: "BUE", destination: "USH", price: 300, availability: 2, date: "2024-06-01" },
+            { origin: "USH", destination: "BUE", price: 280, availability: 3, date: "2024-06-10" }
+        ];
+
+        function buscar() {
+            var presupuesto = parseInt(document.getElementById("presupuesto").value);
+            var origenInput = document.getElementById("origen").value.toUpperCase();
+            var origen = (origenInput === "BUENOS AIRES") ? "BUE" : origenInput;
+            
+            var resultados = document.getElementById("resultados");
+            resultados.innerHTML = ""; 
+            
+            var opciones = []; 
+            
+            for (var i = 0; i < vuelos.length; i++) {
+                if (vuelos[i].origin === origen && vuelos[i].availability > 0) {
+                    var ida = vuelos[i];
+                    var destino = ida.destination;
+                    
+                    for (var j = 0; j < vuelos.length; j++) {
+                        if (vuelos[j].origin === destino && 
+                            vuelos[j].destination === origen && 
+                            vuelos[j].availability > 0 &&
+                            new Date(vuelos[j].date) > new Date(ida.date)) {
+                            
+                            var vuelta = vuelos[j];
+                            var total = ida.price + vuelta.price;
+                            
+                            if (total <= presupuesto) {
+                                var fechaIda = new Date(ida.date);
+                                var fechaVuelta = new Date(vuelta.date);
+                                var dias = Math.floor((fechaVuelta - fechaIda) / (1000 * 60 * 60 * 24));
+                                
+                                opciones.push({
+                                    lugar: destino,
+                                    total: total,
+                                    ida: ida.date,
+                                    vuelta: vuelta.date,
+                                    dias: dias,
+                                    precioIda: ida.price,
+                                    precioVuelta: vuelta.price
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            
+            opciones.sort(function(a, b) {
+                return a.total - b.total;
+            });
+            
+            if (opciones.length === 0) {
+                resultados.innerHTML = '<div class="no-resultados"></span>No hay opciones con ese presupuesto</div>';
+                return;
+            }
+            
+            var lista = '<h2></span>Tus ' + opciones.length + ' opciones más baratas:</h2><ul>';
+            for (var k = 0; k < opciones.length; k++) {
+                var op = opciones[k];
+                var nombreLugar = getNombreLugar(op.lugar); // Función simple para nombres
+                var fechaIda = new Date(op.ida).toLocaleDateString('es-AR');
+                var fechaVuelta = new Date(op.vuelta).toLocaleDateString('es-AR');
+                
+                lista += '<li>';
+                lista += '<div class="destino">' + nombreLugar + '</div>';
+                lista += '<div class="detalles">';
+                lista += 'Ida: ' + fechaIda + ' ($' + op.precioIda + ')<br>';
+                lista += 'Vuelta: ' + fechaVuelta + ' ($' + op.precioVuelta + ')<br>';
+                lista += 'Duración: ' + op.dias + ' días <br>';
+                lista += '</div>';
+                lista += '<div class="costo">Total: $' + op.total + '</div>';
+                lista += '</li>';
+            }
+            lista += '</ul><p style="text-align:center; color:#666';
+            resultados.innerHTML = lista;
+        }
+        
+        function getNombreLugar(codigo) {
+            if (codigo === "COR") return "Córdoba";
+            if (codigo === "MDQ") return "Mar del Plata";
+            if (codigo === "ROS") return "Rosario";
+            if (codigo === "USH") return "Ushuaia";
+            return codigo;
+        }
+    </script>
+</body>
+</html>

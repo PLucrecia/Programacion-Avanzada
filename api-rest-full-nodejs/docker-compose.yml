@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    container_name: api_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-apiuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-apipass}
+      POSTGRES_DB: ${POSTGRES_DB:-apidb}
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: api_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

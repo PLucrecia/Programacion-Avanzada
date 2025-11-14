@@ -1,0 +1,175 @@
+/* Reset muy suave */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f6fb;
+  color: #222;
+  min-height: 100vh;
+}
+
+/* Layout general */
+#app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: #ffcc00; /* tono flybondi */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.header p {
+  color: #555;
+}
+
+/* Home */
+.home section {
+  background: #fff;
+  padding: 24px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.home p {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Formulario */
+#search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+#search-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+#search-form input,
+#search-form select {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d0d7e2;
+  font-size: 1rem;
+}
+
+#search-form input:focus,
+#search-form select:focus {
+  outline: none;
+  border-color: #ffcc00;
+  box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3);
+}
+
+#search-form button {
+  margin-top: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #ffcc00;
+  color: #222;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-start;
+  box-shadow: 0 3px 10px rgba(148, 163, 184, 0.6);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+#search-form button:hover {
+  background: #ffd84a;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(148, 163, 184, 0.7);
+}
+
+/* Resultados */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.results h2 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+#results-list {
+  margin-top: 4px;
+}
+
+/* Cards de vuelos */
+.flight-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(203, 213, 225, 0.7);
+}
+
+.flight-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: #0369a1;
+}
+
+.flight-card p {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+/* Estados vacíos / errores */
+.error,
+.results p,
+.home p {
+  line-height: 1.5;
+}
+
+.error h2 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+/* Links */
+a {
+  color: #0369a1;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+  #app {
+    padding: 16px 10px 32px;
+  }
+
+  .home section {
+    padding: 18px 14px;
+  }
+
+  .flight-card {
+    padding: 14px 12px;
+  }
+}
